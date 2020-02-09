@@ -20,6 +20,6 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
     @Modifying
     @Query(nativeQuery = true,
             value = "update orders set amount=:amount, check_date=:checkDate, state=:state where id=:id")
-    Integer updateOrder(@Param("id") Integer id, @Param("amount") BigDecimal amount,
+    void updateOrder(@Param("id") Integer id, @Param("amount") BigDecimal amount,
                      @Param("checkDate") LocalDate approveDate, @Param("state") String state);
 }

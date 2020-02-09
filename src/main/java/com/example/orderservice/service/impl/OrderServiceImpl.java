@@ -82,7 +82,6 @@ public class OrderServiceImpl implements OrderService {
         orderRepository
                 .updateOrder(orderMessage.getId(), orderMessage.getAmount(), orderMessage.getApproveDate(),
                              orderMessage.getState());
-
     }
 
 
