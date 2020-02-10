@@ -32,12 +32,17 @@ public class RMQOrderProcessingImpl implements RMQOrderProcessing {
 
     @Override
     public void processOrderMessage(Order order, List<OrderLine> orderLineList) {
-        OrderMessage orderMessage = new OrderMessage();
-        orderMessage.setId(order.getId());
-        orderMessage.setState(order.getState());
+        OrderMessage orderMessage = getOrderMessage(order);
         orderMessage.setOrderLineList(orderLineDtoConverter.toDto(orderLineList));
 
         this.processOrderMessage(orderMessage);
+    }
+
+    private OrderMessage getOrderMessage(Order order) {
+        OrderMessage orderMessage = new OrderMessage();
+        orderMessage.setId(order.getId());
+        orderMessage.setState(order.getState());
+        return orderMessage;
     }
 
 

@@ -27,9 +27,8 @@ public class CustomerServiceImpl implements CustomerService {
     @Transactional(readOnly = true)
     public Customer getCustomer(Integer id) {
         return customerRepository.findById(id)
-                                 .orElseThrow(
-                                         () -> new NotFoundException(ErrorMessage.CUSTOMER_NOT_EXIST,
-                                                                     ServiceErrorCode.NOT_FOUND));
+                                 .orElseThrow(() -> new NotFoundException(ErrorMessage.CUSTOMER_NOT_EXIST,
+                                                                          ServiceErrorCode.NOT_FOUND));
     }
 
     @Override
