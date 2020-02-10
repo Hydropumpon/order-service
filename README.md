@@ -4,8 +4,9 @@ ____
 - *operations with customer*
 - *operations with customer's order*
 - *communication with catalogue service for approving/rejecting order with total price calculation*
+- *Jaeger tracing available*
 ## Used technologies
-**Spring, Gradle, Hibernate, Postgresql, Flywaydb, Swagger, Docker, RabbitMQ, Lombok, Eureka**
+**Spring, Gradle, Hibernate, Postgresql, Flywaydb, Swagger, Docker, RabbitMQ, Lombok, Eureka, Jaeger**
 ## How to start application
 - Install RabbitMQ
 - Eureka Discovery Server should be started
