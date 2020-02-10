@@ -18,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -62,7 +63,6 @@ public class OrderServiceImpl implements OrderService {
                 () -> new NotFoundException(ErrorMessage.ORDER_NOT_FOUND, ServiceErrorCode.NOT_FOUND));
     }
 
-
     @Override
     @Transactional(readOnly = true)
     public List<Order> getOrdersByCustomer(Integer id) {
@@ -82,6 +82,14 @@ public class OrderServiceImpl implements OrderService {
         orderRepository
                 .updateOrder(orderMessage.getId(), orderMessage.getAmount(), orderMessage.getApproveDate(),
                              orderMessage.getState());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<OrderLine> getOrderComposition(Integer id) {
+        return orderRepository.findById(id)
+                              .map(order -> orderLineRepository.findByOrder(order))
+                              .orElse(new ArrayList<>());
     }
 
 

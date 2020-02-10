@@ -18,4 +18,6 @@ public interface OrderService {
     Page<Order> getOrders(Pageable pageable);
 
     void updateOrder(OrderMessage orderMessage);
+
+    List<OrderLine> getOrderComposition(Integer id);
 }

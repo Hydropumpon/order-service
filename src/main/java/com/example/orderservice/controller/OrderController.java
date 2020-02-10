@@ -63,6 +63,11 @@ public class OrderController {
         return orderConverterDto.toDto(orderService.getOrdersByCustomer(id));
     }
 
+    @GetMapping("/{id}/composition")
+    public List<OrderLineDto> getOrderComposition(@PathVariable("id") Integer id) {
+        return orderLineConverterDto.toDto(orderService.getOrderComposition(id));
+    }
+
     @PutMapping
     public void updateOrder(@RequestBody OrderMessage orderMessage) {
         orderService.updateOrder(orderMessage);
