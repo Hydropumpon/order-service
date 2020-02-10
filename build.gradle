@@ -34,6 +34,8 @@ dependencies {
     compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'org.postgresql:postgresql'
+    implementation 'io.opentracing.contrib:opentracing-spring-jaeger-web-starter:2.0.3'
+    compile group: 'io.jaegertracing', name: 'jaeger-client', version: "1.1.0"
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
