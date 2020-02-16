@@ -79,6 +79,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public void updateOrder(OrderMessage orderMessage) {
+        orderRepository.findById(orderMessage.getId()).orElseThrow(
+                () -> new NotFoundException(ErrorMessage.ORDER_NOT_FOUND, ServiceErrorCode.NOT_FOUND));
         orderRepository
                 .updateOrder(orderMessage.getId(), orderMessage.getAmount(), orderMessage.getApproveDate(),
                              orderMessage.getState());

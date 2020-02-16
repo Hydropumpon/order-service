@@ -59,7 +59,8 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     @Transactional
-    public Customer updateCustomer(Customer customer) {
+    public Customer updateCustomer(Customer customer, Integer id) {
+        customer.setId(id);
         checkCustomerDublicate(customer);
         return customerRepository.save(customer);
     }

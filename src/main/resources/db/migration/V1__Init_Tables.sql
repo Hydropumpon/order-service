@@ -54,3 +54,9 @@ create table if not exists order_line
 );
 
 alter table order_line owner to postgres;
+
+alter sequence customer_id_seq owned by customer.id;
+
+alter sequence order_line_id_seq owned by order_line.id;
+
+alter sequence order_id_seq owned by orders.id;

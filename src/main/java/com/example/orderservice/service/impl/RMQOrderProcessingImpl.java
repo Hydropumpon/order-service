@@ -19,6 +19,9 @@ public class RMQOrderProcessingImpl implements RMQOrderProcessing {
     @Value("${rabbitmq.exchanges.order}")
     private String orderExchange;
 
+    @Value("${rabbitmq.routing_key.order}")
+    private String orderRoutingKey;
+
     @Autowired
     private ConverterDto<OrderLine, OrderLineDto> orderLineDtoConverter;
 
@@ -27,7 +30,7 @@ public class RMQOrderProcessingImpl implements RMQOrderProcessing {
 
     @Override
     public void processOrderMessage(OrderMessage orderMessage) {
-        rabbitTemplate.convertAndSend(orderExchange, "", orderMessage);
+        rabbitTemplate.convertAndSend(orderExchange, orderRoutingKey, orderMessage);
     }
 
     @Override

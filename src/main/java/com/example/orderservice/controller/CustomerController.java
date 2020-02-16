@@ -54,10 +54,10 @@ public class CustomerController {
         customerService.deleteCustomer(customerId);
     }
 
-    @PutMapping
-    public CustomerDto updateCustomer(@RequestBody @Valid CustomerDto customerDto){
+    @PutMapping("/{id}")
+    public CustomerDto updateCustomer(@RequestBody @Valid CustomerDto customerDto, @PathVariable("id") Integer id){
         Customer customer = customerConverterDto.toEntity(customerDto);
-        return customerConverterDto.toDto(customerService.updateCustomer(customer));
+        return customerConverterDto.toDto(customerService.updateCustomer(customer, id));
     }
 
 }
