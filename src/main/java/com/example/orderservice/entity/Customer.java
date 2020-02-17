@@ -29,6 +29,7 @@ public class Customer {
     private Integer id;
 
     @NotNull
+    @Column(unique = true)
     @Email
     private String email;
 

@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -78,12 +79,15 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public void updateOrder(OrderMessage orderMessage) {
-        orderRepository.findById(orderMessage.getId()).orElseThrow(
+    public void updateOrder(OrderMessage orderMessage, Integer id) {
+        orderRepository.findById(id)
+                       .map(order -> {
+                           order.setAmount(orderMessage.getAmount());
+                           order.setCheckDate(orderMessage.getApproveDate());
+                           order.setState(orderMessage.getState());
+                           return Optional.empty();
+                       }).orElseThrow(
                 () -> new NotFoundException(ErrorMessage.ORDER_NOT_FOUND, ServiceErrorCode.NOT_FOUND));
-        orderRepository
-                .updateOrder(orderMessage.getId(), orderMessage.getAmount(), orderMessage.getApproveDate(),
-                             orderMessage.getState());
     }
 
     @Override

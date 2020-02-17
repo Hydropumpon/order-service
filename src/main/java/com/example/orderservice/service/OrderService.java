@@ -17,7 +17,7 @@ public interface OrderService {
 
     Page<Order> getOrders(Pageable pageable);
 
-    void updateOrder(OrderMessage orderMessage);
+    void updateOrder(OrderMessage orderMessage, Integer id);
 
     List<OrderLine> getOrderComposition(Integer id);
 }

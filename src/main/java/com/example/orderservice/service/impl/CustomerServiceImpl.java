@@ -54,7 +54,8 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     @Transactional
     public void deleteCustomer(Integer id) {
-        customerRepository.findById(id).ifPresent(customer -> customerRepository.delete(customer));
+        customerRepository.findById(id)
+                          .ifPresent(customer -> customerRepository.delete(customer));
     }
 
     @Override

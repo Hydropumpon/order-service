@@ -22,7 +22,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/order")
+@RequestMapping("/order-service/order")
 public class OrderController {
 
     private OrderService orderService;
@@ -68,8 +68,8 @@ public class OrderController {
         return orderLineConverterDto.toDto(orderService.getOrderComposition(id));
     }
 
-    @PutMapping
-    public void updateOrder(@RequestBody OrderMessage orderMessage) {
-        orderService.updateOrder(orderMessage);
+    @PutMapping("/{id}")
+    public void updateOrder(@RequestBody OrderMessage orderMessage, @PathVariable("id") Integer id) {
+        orderService.updateOrder(orderMessage, id);
     }
 }

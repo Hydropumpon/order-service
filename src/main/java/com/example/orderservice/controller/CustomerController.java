@@ -19,7 +19,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/customer")
+@RequestMapping(value = "/order-service/customer")
 public class CustomerController {
 
     private CustomerService customerService;
