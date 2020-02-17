@@ -24,3 +24,7 @@ ____
 - Once the order is placed it's current state is CREATED, approvement request is sended with rabbitmq to catalogue service which is checking
 are all items are present in catalogue and calcing the total price for order. Catalogue service sending a rest request for updating current 
 state of order and it's total price.
+
+# UML sequnce
+[UML sequence diagram](https://sequencediagram.org/index.html?presentationMode=readOnly#initialData=C4S2BsFMAIEkDsBuB7EBjGBbdAnZBnSHRdGYHAQ3nwrVGXgChHbhkdoBhcESeYZt178AtAD4A8jgAmRaNjR5CxUgC5oAB3C0YVaO1k51GgsH0aiFek1YhEVmFMPzcBIiQyMnchUvelxbw5fNxUMdTQAC0g0AGsQeABzaBAAM2g0AFd8Nkw5SAAPEBz8ABpoGhIk-Rk5BOhpKwoAIwpCRiE+YAAeEREgl0VQj0h1AzlFSAdpaCp8AHciZgGQ5RHxMU4m8GREzKxXNbVoSmbmsEwARzHa4Mh8GkSYex5G6xY6Owcubd39wb8YUgzFktnswEctwBw1IHV+ewOQyOGHEW2AFB2COhyNGGQxaASyXGHAomGQmX4s3gMxw9381TAkEw+C8UNW-gwvTRGL+iMBI3UqUgIES8AyPC6goSxWiM2J0GgIKmn3BMG5mP+7KBzDB3xWhw5wP1SMNgTZBqB6kyGjehJqzgSqXYmCsIAYjFBKr15pN2s6okkPv5xyeZj0xI+oFV0GNwc8-p6-SDMPC0FD0FSCQx9rq8CdOBd1iAA)
+
