@@ -19,8 +19,9 @@ create table if not exists customer
     id integer not null
         constraint customer_pkey
             primary key,
-    email varchar(255) not null unique ,
-    phone_number varchar(255) not null
+    email varchar(255) unique ,
+    is_deleted bool not null,
+    phone_number varchar(255)
 );
 
 alter table customer owner to postgres;

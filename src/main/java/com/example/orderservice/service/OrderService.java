@@ -1,5 +1,6 @@
 package com.example.orderservice.service;
 
+import com.example.orderservice.dto.ItemDto;
 import com.example.orderservice.entity.Order;
 import com.example.orderservice.entity.OrderLine;
 import com.example.orderservice.messages.OrderMessage;
@@ -19,5 +20,5 @@ public interface OrderService {
 
     void updateOrder(OrderMessage orderMessage, Integer id);
 
-    List<OrderLine> getOrderComposition(Integer id);
+    List<ItemDto> getOrderComposition(Integer id);
 }

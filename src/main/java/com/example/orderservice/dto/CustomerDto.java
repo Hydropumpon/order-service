@@ -1,7 +1,9 @@
 package com.example.orderservice.dto;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -10,6 +12,8 @@ import java.beans.ConstructorProperties;
 
 @Getter
 @Builder
+@EqualsAndHashCode
+@ToString
 public class CustomerDto {
 
     private final Integer id;

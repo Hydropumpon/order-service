@@ -2,11 +2,15 @@ package com.example.orderservice.config;
 
 import io.jaegertracing.Configuration;
 import io.jaegertracing.internal.samplers.ProbabilisticSampler;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 
 
 @org.springframework.context.annotation.Configuration
 public class JaegerConfig {
+
+    @Value("${spring.application.name}")
+    private String appName;
 
     @Bean
     public io.opentracing.Tracer jaegerTracer() {
@@ -16,7 +20,7 @@ public class JaegerConfig {
         Configuration.ReporterConfiguration reporterConfiguration =
                 Configuration.ReporterConfiguration.fromEnv().withLogSpans(true);
         Configuration configuration =
-                new Configuration("order").withSampler(samplerConfiguration).withReporter(reporterConfiguration);
+                new Configuration(appName).withSampler(samplerConfiguration).withReporter(reporterConfiguration);
 
         return configuration.getTracer();
     }

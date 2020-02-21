@@ -6,7 +6,7 @@ import com.example.orderservice.messages.OrderMessage;
 
 import java.util.List;
 
-public interface RMQOrderProcessing {
+public interface RabbitOrderRequestService {
 
     void processOrderMessage(OrderMessage orderMessage);
 

@@ -26,7 +26,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     @Transactional(readOnly = true)
     public Customer getCustomer(Integer id) {
-        return customerRepository.findById(id)
+        return customerRepository.findCustomerByIdAndIsDeletedIsFalse(id)
                                  .orElseThrow(() -> new NotFoundException(ErrorMessage.CUSTOMER_NOT_EXIST,
                                                                           ServiceErrorCode.NOT_FOUND));
     }
@@ -34,7 +34,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     @Transactional(readOnly = true)
     public Page<Customer> getCustomers(Pageable pageable) {
-        return customerRepository.findAll(pageable);
+        return customerRepository.findAllByIsDeletedIsFalse(pageable);
     }
 
 
@@ -53,27 +53,17 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     @Transactional
-    public void deleteCustomer(Integer id) {
-        customerRepository.findById(id)
-                          .ifPresent(customer -> customerRepository.delete(customer));
+    public void deleteCustomer(Integer customerId) {
+        Customer customer = this.getCustomer(customerId);
+        customerRepository.deleteCustomer(customer.getId());
     }
 
     @Override
     @Transactional
     public Customer updateCustomer(Customer customer, Integer id) {
-        customer.setId(id);
-        checkCustomerDublicate(customer);
-        return customerRepository.save(customer);
+        Customer customerDb = this.getCustomer(id);
+        customerDb.setEmail(customer.getEmail());
+        customerDb.setPhoneNumber(customer.getPhoneNumber());
+        return customerRepository.save(customerDb);
     }
-
-    private void checkCustomerDublicate(Customer customer) {
-        customerRepository.findByEmail(customer.getEmail())
-                          .filter(customerDb -> !customerDb.getId().equals(customer.getId()))
-                          .ifPresent(cust -> {
-                              throw new ConflictException(ErrorMessage.CUSTOMER_ALREADY_EXIST,
-                                                          ServiceErrorCode.ALREADY_EXIST);
-                          });
-    }
-
-
 }

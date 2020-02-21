@@ -2,6 +2,7 @@ package com.example.orderservice.dto;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 
 @Getter
 @Builder
+@ToString
 public class OrderDto {
     private final Integer id;
 

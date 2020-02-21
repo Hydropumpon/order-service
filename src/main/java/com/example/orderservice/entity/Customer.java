@@ -25,15 +25,18 @@ public class Customer {
 
     @Id
     @SequenceGenerator(name = "customer_id_gen", sequenceName = "customer_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "customer_id_gen")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_id_gen")
     private Integer id;
 
-    @NotNull
     @Column(unique = true)
     @Email
     private String email;
 
-    @NotNull
     @Column(name = "phone_number")
     private String phoneNumber;
+
+    @Column(name = "is_deleted")
+    @NotNull
+    private Boolean isDeleted;
+
 }

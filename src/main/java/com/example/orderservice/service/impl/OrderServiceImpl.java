@@ -1,5 +1,7 @@
 package com.example.orderservice.service.impl;
 
+import com.example.orderservice.client.CatalogueClient;
+import com.example.orderservice.dto.ItemDto;
 import com.example.orderservice.entity.Customer;
 import com.example.orderservice.entity.Order;
 import com.example.orderservice.entity.OrderLine;
@@ -11,7 +13,7 @@ import com.example.orderservice.repository.OrderLineRepository;
 import com.example.orderservice.repository.OrderRepository;
 import com.example.orderservice.service.CustomerService;
 import com.example.orderservice.service.OrderService;
-import com.example.orderservice.service.RMQOrderProcessing;
+import com.example.orderservice.service.RabbitOrderRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,28 +22,32 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements OrderService {
+
+    private CatalogueClient catalogueClient;
 
     private OrderRepository orderRepository;
 
     private OrderLineRepository orderLineRepository;
 
-    private RMQOrderProcessing rmqOrderProcessing;
+    private RabbitOrderRequestService rabbitOrderRequestService;
 
     private CustomerService customerService;
 
     @Autowired
     public OrderServiceImpl(OrderRepository orderRepository,
                             OrderLineRepository orderLineRepository,
-                            RMQOrderProcessing rmqOrderProcessing,
-                            CustomerService customerService) {
+                            RabbitOrderRequestService rabbitOrderRequestService,
+                            CustomerService customerService,
+                            CatalogueClient catalogueClient) {
         this.orderRepository = orderRepository;
         this.orderLineRepository = orderLineRepository;
-        this.rmqOrderProcessing = rmqOrderProcessing;
+        this.rabbitOrderRequestService = rabbitOrderRequestService;
         this.customerService = customerService;
+        this.catalogueClient = catalogueClient;
     }
 
 
@@ -52,7 +58,7 @@ public class OrderServiceImpl implements OrderService {
         orderLineList.forEach(orderLine -> orderLine.setOrder(orderDb));
         orderLineRepository.saveAll(orderLineList);
 
-        rmqOrderProcessing.processOrderMessage(order, orderLineList);
+        rabbitOrderRequestService.processOrderMessage(order, orderLineList);
 
         return orderDb;
     }
@@ -85,16 +91,21 @@ public class OrderServiceImpl implements OrderService {
                            order.setAmount(orderMessage.getAmount());
                            order.setCheckDate(orderMessage.getApproveDate());
                            order.setState(orderMessage.getState());
-                           return Optional.empty();
+                           return orderRepository.save(order);
                        }).orElseThrow(
                 () -> new NotFoundException(ErrorMessage.ORDER_NOT_FOUND, ServiceErrorCode.NOT_FOUND));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<OrderLine> getOrderComposition(Integer id) {
+    public List<ItemDto> getOrderComposition(Integer id) {
         return orderRepository.findById(id)
                               .map(order -> orderLineRepository.findByOrder(order))
+                              .map(orderLines -> orderLines.stream()
+                                                           .map(orderLine -> catalogueClient
+                                                                   .getItemById(orderLine.getItemId()))
+                                                           .collect(Collectors.toList())
+                                  )
                               .orElse(new ArrayList<>());
     }
 

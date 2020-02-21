@@ -23,26 +23,30 @@ import java.util.Map;
 @Configuration
 public class RMQConfig {
 
-    @Value("${rabbitmq.dead_order.ttl}")
-    private Long deadOrderTtl;
+    private static final String DEAD_QUEUE_EXCHANGE_PARAM_NAME = "x-dead-letter-exchange";
+    private static final String DEAD_QUEUE_ROUTING_KEY_PARAM_NAME = "x-dead-letter-routing-key";
+    private static final String QUEUE_TTL_PARAM_NAME = "x-message-ttl";
 
-    @Value("${rabbitmq.routing_key.order}")
-    private String orderRoutingKey;
+    @Value("${rabbitmq.dead_order_request.ttl}")
+    private Long deadOrderRequestTtl;
 
-    @Value("${rabbitmq.routing_key.dead_order}")
-    private String deadOrderRoutingKey;
+    @Value("${rabbitmq.routing_key.order_request}")
+    private String orderRequestRoutingKey;
 
-    @Value("${rabbitmq.queues.order}")
-    private String orderQueue;
+    @Value("${rabbitmq.routing_key.dead_order_request}")
+    private String deadOrderRequestRoutingKey;
 
-    @Value("${rabbitmq.exchanges.order}")
-    private String orderExchange;
+    @Value("${rabbitmq.queues.order_request}")
+    private String orderRequestQueue;
 
-    @Value("${rabbitmq.queues.dead_order}")
-    private String deadOrderQueue;
+    @Value("${rabbitmq.exchanges.order_request}")
+    private String orderRequestExchange;
 
-    @Value("${rabbitmq.exchanges.dead_order}")
-    private String deadOrderExchange;
+    @Value("${rabbitmq.queues.dead_order_request}")
+    private String deadOrderRequestQueue;
+
+    @Value("${rabbitmq.exchanges.dead_order_request}")
+    private String deadOrderRequestExchange;
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
@@ -56,35 +60,36 @@ public class RMQConfig {
     @Autowired
     private RabbitAdmin rabbitAdmin;
 
-
     @PostConstruct
     protected void init() {
         rabbitTemplate.setMessageConverter(messageConverter);
         containerFactory.setMessageConverter(messageConverter);
         containerFactory.setMissingQueuesFatal(false);
-        declarePointToPointQueue();
+        declareOrderRequestQueue();
     }
 
-    private void declarePointToPointQueue() {
+    private void declareOrderRequestQueue() {
 
         Map<String, Object> args = new HashMap<>();
-        args.put("x-dead-letter-exchange", orderExchange);
-        args.put("x-dead-letter-routing-key", orderQueue);
-        args.put("x-message-ttl", deadOrderTtl);
+        args.put(DEAD_QUEUE_EXCHANGE_PARAM_NAME, orderRequestExchange);
+        args.put(DEAD_QUEUE_ROUTING_KEY_PARAM_NAME, orderRequestQueue);
+        args.put(QUEUE_TTL_PARAM_NAME, deadOrderRequestTtl);
 
-        rabbitAdmin.declareQueue(new Queue(deadOrderQueue, true, false, false, args));
-        rabbitAdmin.declareExchange(new DirectExchange(deadOrderExchange, true, false));
+        rabbitAdmin.declareQueue(new Queue(deadOrderRequestQueue, true, false, false, args));
+        rabbitAdmin.declareExchange(new DirectExchange(deadOrderRequestExchange, true, false));
         rabbitAdmin.declareBinding(
-                new Binding(deadOrderQueue, Binding.DestinationType.QUEUE, deadOrderExchange, deadOrderRoutingKey,
+                new Binding(deadOrderRequestQueue, Binding.DestinationType.QUEUE, deadOrderRequestExchange,
+                            deadOrderRequestRoutingKey,
                             null));
 
         args = new HashMap<>();
-        args.put("x-dead-letter-exchange", deadOrderExchange);
-        args.put("x-dead-letter-routing-key",deadOrderRoutingKey);
+        args.put(DEAD_QUEUE_EXCHANGE_PARAM_NAME, deadOrderRequestExchange);
+        args.put(DEAD_QUEUE_ROUTING_KEY_PARAM_NAME, deadOrderRequestRoutingKey);
 
-        rabbitAdmin.declareQueue(new Queue(orderQueue, true, false, false, args));
-        rabbitAdmin.declareExchange(new DirectExchange(orderExchange, true, false));
-        rabbitAdmin.declareBinding(new Binding(orderQueue, Binding.DestinationType.QUEUE, orderExchange, orderRoutingKey, null));
+        rabbitAdmin.declareQueue(new Queue(orderRequestQueue, true, false, false, args));
+        rabbitAdmin.declareExchange(new DirectExchange(orderRequestExchange, true, false));
+        rabbitAdmin.declareBinding(
+                new Binding(orderRequestQueue, Binding.DestinationType.QUEUE, orderRequestExchange, orderRequestRoutingKey, null));
     }
 
     @Bean

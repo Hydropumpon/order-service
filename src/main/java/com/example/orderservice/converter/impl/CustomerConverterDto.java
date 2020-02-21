@@ -13,6 +13,7 @@ public class CustomerConverterDto implements ConverterDto<Customer, CustomerDto>
                        .email(dto.getEmail())
                        .id(dto.getId())
                        .phoneNumber(dto.getPhoneNumber())
+                       .isDeleted(false)
                        .build();
     }
 
