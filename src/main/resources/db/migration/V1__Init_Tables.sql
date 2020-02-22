@@ -2,15 +2,15 @@ create sequence hibernate_sequence;
 
 alter sequence hibernate_sequence owner to postgres;
 
-create sequence customer_id_seq start with 1 increment by 1 cache 5;
+create sequence customer_id_seq start with 1 increment by 1 cache 1;
 
 alter sequence customer_id_seq owner to postgres;
 
-create sequence order_id_seq start with 1 increment by 1 cache 5;
+create sequence order_id_seq start with 1 increment by 1 cache 1;
 
 alter sequence order_id_seq owner to postgres;
 
-create sequence order_line_id_seq start with 1 increment by 1 cache 5;
+create sequence order_line_id_seq start with 1 increment by 1 cache 1;
 
 alter sequence order_line_id_seq owner to postgres;
 
