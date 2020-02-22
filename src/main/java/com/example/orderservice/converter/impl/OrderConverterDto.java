@@ -1,6 +1,5 @@
 package com.example.orderservice.converter.impl;
 
-import com.example.orderservice.common.OrderStates;
 import com.example.orderservice.converter.ConverterDto;
 import com.example.orderservice.dto.OrderDto;
 import com.example.orderservice.entity.Order;
@@ -28,7 +27,6 @@ public class OrderConverterDto implements ConverterDto<Order, OrderDto> {
                     .creationDate(LocalDate.now())
                     .customer(customerService.getCustomer(dto.getCustomerId()))
                     .id(dto.getId())
-                    .state(OrderStates.CREATED)
                     .build();
     }
 

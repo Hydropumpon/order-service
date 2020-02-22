@@ -1,6 +1,7 @@
 package com.example.orderservice.service.impl;
 
 import com.example.orderservice.client.CatalogueClient;
+import com.example.orderservice.common.OrderStates;
 import com.example.orderservice.dto.ItemDto;
 import com.example.orderservice.entity.Customer;
 import com.example.orderservice.entity.Order;
@@ -14,7 +15,6 @@ import com.example.orderservice.repository.OrderRepository;
 import com.example.orderservice.service.CustomerService;
 import com.example.orderservice.service.OrderService;
 import com.example.orderservice.service.RabbitOrderRequestService;
-import com.google.common.base.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -54,6 +54,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public Order addOrder(Order order, List<OrderLine> orderLineList) {
+        order.setState(OrderStates.CREATED);
         Order orderDb = orderRepository.save(order);
         orderLineList.forEach(orderLine -> orderLine.setOrder(orderDb));
         orderLineRepository.saveAll(orderLineList);
