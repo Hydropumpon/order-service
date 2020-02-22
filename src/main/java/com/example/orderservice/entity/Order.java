@@ -1,5 +1,6 @@
 package com.example.orderservice.entity;
 
+import com.example.orderservice.common.OrderStates;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,6 +9,8 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -39,7 +42,8 @@ public class Order {
     private Customer customer;
 
     @NotNull
-    private String state;
+    @Enumerated(EnumType.STRING)
+    private OrderStates state;
 
     @NotNull
     @Column(name = "creation_date")

@@ -1,5 +1,6 @@
 package com.example.orderservice.messages;
 
+import com.example.orderservice.common.OrderStates;
 import com.example.orderservice.dto.OrderLineDto;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -24,7 +25,7 @@ public class OrderMessage {
 
     private Integer id;
 
-    private String state;
+    private OrderStates state;
 
     private BigDecimal amount;
 
@@ -34,7 +35,7 @@ public class OrderMessage {
 
     @JsonCreator
     public OrderMessage(@JsonProperty("id") Integer id,
-                        @JsonProperty("state") String state,
+                        @JsonProperty("state") OrderStates state,
                         @JsonProperty("amount") BigDecimal amount,
                         @JsonProperty("orderLineList") List<OrderLineDto> orderLineList,
                         @JsonProperty("approveDate") LocalDate approveDate) {
