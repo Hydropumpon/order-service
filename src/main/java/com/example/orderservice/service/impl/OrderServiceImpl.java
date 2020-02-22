@@ -14,6 +14,7 @@ import com.example.orderservice.repository.OrderRepository;
 import com.example.orderservice.service.CustomerService;
 import com.example.orderservice.service.OrderService;
 import com.example.orderservice.service.RabbitOrderRequestService;
+import com.google.common.base.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -56,9 +57,7 @@ public class OrderServiceImpl implements OrderService {
         Order orderDb = orderRepository.save(order);
         orderLineList.forEach(orderLine -> orderLine.setOrder(orderDb));
         orderLineRepository.saveAll(orderLineList);
-
         rabbitOrderRequestService.processOrderMessage(order, orderLineList);
-
         return orderDb;
     }
 
